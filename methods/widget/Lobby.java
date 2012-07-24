@@ -341,11 +341,19 @@ public class Lobby {
 				return false;
 			}
 		}
+		/**
+	 	 * suggest adding a check for a back dialog instead of just a continue dialog
+		 * so that if there is a back dialog, it wont just sit there until the timeout
+		 * time is reached to do something.
+		 */
 		final Timer t = new Timer(timeout);
 		while (t.isRunning() && !Game.isLoggedIn()) {
 			final Dialog dialog = getOpenDialog();
 			if (dialog == Dialog.TRANSFER_COUNTDOWN || (dialog != null && dialog.clickContinue())) {
 				t.reset();
+			} else if (dialog != null && dialog.clickBack()) {
+				Time.sleep(500, 1000);
+				break;	
 			} else if (dialog != null) {
 				Time.sleep(500, 1000);
 				break;
